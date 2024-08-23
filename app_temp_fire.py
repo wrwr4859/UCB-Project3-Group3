@@ -12,7 +12,9 @@ app = Flask(__name__)
 def load_data():
     conn = sqlite3.connect('ca_wildfires.db')
     df = pd.read_sql_query("SELECT * FROM merged_table", conn)  # Using merged_table as you mentioned earlier
-    df['Alarm Date'] = pd.to_datetime(df['Alarm Date'])
+    df['Alarm Date'] = pd.to_datetime(df['Alarm Date'], errors='coerce')
+    
+    df = df.dropna(subset=['Alarm Date', 'Containment Date', 'Latitude', 'Longitude', 'GIS Acres', 'Temperature'])
     conn.close()
     return df
 
