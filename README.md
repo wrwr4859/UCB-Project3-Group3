@@ -31,7 +31,7 @@ Usage
 
 Project Structure
 
-app.py: The main Flask application file that sets up the web server and defines the routes for the application.
+app_fire.py and app_temp_fire: The main Flask application file that sets up the web server and defines the routes for the application.
 templates/: Directory containing HTML templates for rendering the web pages.
 static/: Directory for storing static files such as CSS, JavaScript, and images.
 ca_wildfires.db: The SQLite database file containing wildfire data.

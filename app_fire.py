@@ -99,7 +99,6 @@ print("Checking for NA values:")
 print(df[['Latitude', 'Longitude', 'GIS Acres', 'duration_days']].isna().sum())
 
 # Check some latitude and longitude values to ensure they are valid
-print("Sample latitude and longitude values:")
 print(df[['Latitude', 'Longitude']].head())
 
 
@@ -133,6 +132,20 @@ def update_map(year):
             fill_opacity=0.7,
             popup=folium.Popup(f"Acres Burned: {row['GIS Acres']}<br>Duration: {row['duration_days']} days<br>Fire Name: {row['Fire Name']}", max_width=200)
         ).add_to(marker_cluster)
+    
+    # Add a legend for fire duration
+    legend_html = '''
+     <div style="position: fixed; 
+                 bottom: 50px; right: 50px; width: 180px; height: 120px; 
+                 background-color: white; z-index:9999; font-size:14px;
+                 border:2px solid grey; padding: 10px; opacity: 0.9;">
+     <b>Fire Duration (days)</b><br>
+     <i class="fa fa-circle" style="color:green"></i> Less than 5<br>
+     <i class="fa fa-circle" style="color:orange"></i> 5 to 10<br>
+     <i class="fa fa-circle" style="color:red"></i> More than 10
+     </div>
+     '''
+    m.get_root().html.add_child(folium.Element(legend_html))
     
     return m
 
@@ -172,11 +185,6 @@ def index():
         </html>
     ''', map_html=map_html, unique_years=unique_years, year=year)
 
-# if __name__ == '__main__':
-#     logging.basicConfig(level=logging.DEBUG)  # Configure logging
-#     app.run(debug=True, port=5001)  # Run the Flask app on port 5001
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     app.run(debug=True, host='0.0.0.0', port=5001)
-

@@ -71,6 +71,10 @@ def index():
         </html>
     ''', map_html=map_html, unique_years=unique_years, year=year)
 
+# if __name__ == '__main__':
+#     logging.basicConfig(level=logging.DEBUG)
+#     app.run(debug=True)
+    
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)
