@@ -6,11 +6,8 @@ import sqlite3
 from pathlib import Path
 import geopandas as gpd
 from folium.plugins import MarkerCluster 
-from pathlib import Path
 
 # Path to the GeoJSON file
-# file_js = Path('Modules/04-Data-Analysis-Pandas/2/Activities/03-Ins_Cleaning_Data/Solved/Resources/California_Fire_Perimeters.geojson')
-# Construct the relative path to the GeoJSON file
 file_js = Path(__file__).parent / 'Resources/California_Fire_Perimeters.geojson'
 
 # Step 1: Load Wildfire GeoJSON Data
@@ -140,7 +137,6 @@ def update_map(year):
     return m
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # Default year
@@ -176,6 +172,11 @@ def index():
         </html>
     ''', map_html=map_html, unique_years=unique_years, year=year)
 
+# if __name__ == '__main__':
+#     logging.basicConfig(level=logging.DEBUG)  # Configure logging
+#     app.run(debug=True, port=5001)  # Run the Flask app on port 5001
+
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, port=5001)
-    app.run(debug=True)
+    logging.basicConfig(level=logging.DEBUG)
+    app.run(debug=True, host='0.0.0.0', port=5001)
+
