@@ -149,7 +149,7 @@ def update_map(year):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # Default year
-    year = 1975
+    year = 2022
     
     if request.method == 'POST':
         year = int(request.form.get('year'))
