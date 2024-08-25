@@ -7,6 +7,7 @@ from pathlib import Path
 import geopandas as gpd
 from folium.plugins import MarkerCluster 
 
+#Flask app to let user interactive with wildfire map
 # Path to the GeoJSON file
 file_js = Path(__file__).parent / 'Resources/California_Fire_Perimeters.geojson'
 
