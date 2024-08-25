@@ -140,25 +140,6 @@ def update_map(year):
     return m
 
 
-# @app.route('/')
-# def index():
-#     m = update_map(2022)  # Example: default to year 2020
-#     map_html = m._repr_html_()
-#     return render_template_string('''
-#         <html>
-#         <head>
-#             <title>Wildfire Map</title>
-#         </head>
-#         <body>
-#             <h1>Wildfire Map</h1>
-#             <div>{{ map_html|safe }}</div>
-#         </body>
-#         </html>
-#     ''', map_html=map_html)
-
-# if __name__ == '__main__':
-#     logging.basicConfig(level=logging.DEBUG)
-#     app.run(debug=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -196,5 +177,5 @@ def index():
     ''', map_html=map_html, unique_years=unique_years, year=year)
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG, port=5001)
     app.run(debug=True)
