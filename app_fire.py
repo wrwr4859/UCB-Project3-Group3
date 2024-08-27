@@ -123,27 +123,59 @@ def update_map(year):
     filtered_df = df[df['Alarm Date'].dt.year == year]
     print(f"Number of records for year {year}: {len(filtered_df)}")  # Debugging output
     
+    # for _, row in filtered_df.iterrows():
+    #     # Define the custom .png image you want to use:
+    #     custom_icon = 'Images/Flame_Icon.png.png'
+    #     custom_icon = folium.features.CustomIcon(
+    #         icon_image=custom_icon,
+    #         # Set the size of the icon
+    #         icon_size=(50, 50),
+    #         # sett the anchor point of the icon
+    #         icon_anchor=(15, 15)
+    # )
+    #     # Update the Marker creation to use the custom icon:
+    #     marker = folium.Marker(
+    #     location=(row['Latitude'], row['Longitude']),
+    #     icon=custom_icon,
+    #     popup=folium.Popup(
+    #         f"Acres Burned: {row['GIS Acres']}<br>Duration: {row['duration_days']} days<br>Fire Name: {row['Fire Name']}",
+    #         max_width=200
+    #     )
+    # )
+    #     # Add the marker to the marker cluster
+    #     marker.add_to(marker_cluster)
+
     for _, row in filtered_df.iterrows():
-        # Define the custom .png image you want to use:
-        custom_icon = 'Images/Flame_Icon.png.png'
-        custom_icon = folium.features.CustomIcon(
-            icon_image=custom_icon,
-            # Set the size of the icon
-            icon_size=(50, 50),
-            # sett the anchor point of the icon
-            icon_anchor=(15, 15)
-    )
-        # Update the Marker creation to use the custom icon:
-        marker = folium.Marker(
-        location=(row['Latitude'], row['Longitude']),
-        icon=custom_icon,
-        popup=folium.Popup(
-            f"Acres Burned: {row['GIS Acres']}<br>Duration: {row['duration_days']} days<br>Fire Name: {row['Fire Name']}",
-            max_width=200
-        )
-    )
-        # Add the marker to the marker cluster
-        marker.add_to(marker_cluster)
+        # print(f"Placing marker at ({row['Latitude']}, {row['Longitude']}) with radius {row['GIS Acres']}")
+        # folium.Marker(
+        #     location=(row['Latitude'], row['Longitude']),
+        #     popup=folium.Popup(f"Acres Burned: {row['GIS Acres']}<br>Duration: {row['duration_days']} days", max_width=200)
+        # ).add_to(marker_cluster)
+        
+        folium.CircleMarker(
+            location=(row['Latitude'], row['Longitude']),
+            radius=max(1, row['GIS Acres'] / 1000),  # Adjust size according to acres burned
+            color=color_producer(row['duration_days']),
+            fill=True,
+            fill_color=color_producer(row['duration_days']),
+            fill_opacity=0.7,
+            popup=folium.Popup(f"Acres Burned: {row['GIS Acres']}<br>Duration: {row['duration_days']} days<br>Fire Name: {row['Fire Name']}", max_width=200)
+        ).add_to(marker_cluster)
+    # Add a legend to the map
+    legend_html = '''
+    <div style="position: fixed; 
+    bottom: 50px; left: 50px; width: 150px; height: 90px; 
+    border:2px solid grey; z-index:9999; font-size:14px;
+    background-color:white;
+    ">
+    &nbsp;<b>Duration (days)</b><br>
+    &nbsp;<i class="fa fa-circle" style="color:green"></i>&nbsp; < 5 <br>
+    &nbsp;<i class="fa fa-circle" style="color:orange"></i>&nbsp; 5-10 <br>
+    &nbsp;<i class="fa fa-circle" style="color:red"></i>&nbsp; > 10
+    </div>
+    '''
+    m.get_root().html.add_child(folium.Element(legend_html))
+
     return m
 
 
